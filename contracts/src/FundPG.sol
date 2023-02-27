@@ -22,15 +22,13 @@ interface AaveLendingPool{
 contract FundPG {
     uint256 MAX_INT = 2**256 - 1;
     address public depositToken;
-    address public aaveToken;
     address public strategyAddress;
     address public admin;
     mapping (address => uint256) public userAllocation;
     mapping (address => uint256) public userPrincipal;
 
-    constructor(address _depositToken, address _aaveToken, address _strategyAddress) {
+    constructor(address _depositToken, address _strategyAddress) {
         depositToken = _depositToken;
-        aaveToken = _aaveToken;
         strategyAddress = _strategyAddress;
         admin = msg.sender;
     }
@@ -66,7 +64,6 @@ contract FundPG {
 
     function withdrawAllUnderlyingOnBehalf() public {
         AaveLendingPool aaveContract = AaveLendingPool(strategyAddress);   
-        Erc20 atokenContract = Erc20(aaveToken);
         
         // Retrieve principal + interest of user's deposit
         (, uint128 liquidityIndex, , , , , , , , , , ) = aaveContract.getReserveData(depositToken);

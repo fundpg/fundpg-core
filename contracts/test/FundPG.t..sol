@@ -30,14 +30,13 @@ contract FundPGTest is Test {
     
     address vaultAddress;
     address depositToken = 0x6B175474E89094C44Da98b954EedeAC495271d0F; // DAI
-    address aaveToken = 0x028171bCA77440897B824Ca71D1c56caC55b68A3; // aDAI
     address strategyAddress = 0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9; // Aave Lending Pool V2
     address myAddress = 0xC83A986e3939f5e789c49c2Ac3D25fcF53E1DB86;
     uint256 MAX_INT = 2**256 - 1;
 
     function setUp() public {
         mainnetFork = vm.createFork("https://eth.llamarpc.com");
-        vault = new FundPG(depositToken, aaveToken, strategyAddress);
+        vault = new FundPG(depositToken,strategyAddress);
         vm.makePersistent(address(vault));
         vm.selectFork(mainnetFork);
         vm.startBroadcast(myAddress);
@@ -54,6 +53,7 @@ contract FundPGTest is Test {
         // Jumps forward blocks
         vm.warp(block.timestamp + 10000);
      
-        // Withdraw 9.5 DAI to user and 0.5 DAI to vault
+        // Withdraw 95% DAI to user and 5% DAI to vault
         vault.withdrawAllUnderlyingOnBehalf();
+    }
 }

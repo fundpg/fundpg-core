@@ -6,3 +6,6 @@
 [submodule "contracts/lib/aave-protocol"]
 	path = contracts/lib/aave-protocol
 	url = https://github.com/aave/aave-protocol
+[submodule "contracts/lib/openzeppelin-contracts"]
+	path = contracts/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
