@@ -21,6 +21,7 @@ interface aDai {
     function balanceOf(address user) external view returns (uint256);
 }
 
+
 contract FundPGTest is Test {
     uint256 mainnetFork;
     FundPG public vault;
@@ -50,10 +51,38 @@ contract FundPGTest is Test {
         // Deposit 30 DAI to vault 
         vault.depositUnderlyingOnBehalf(30000000000000000000, 5);
 
+        // // Get users struct and print
+        (uint256 userAllocation, uint256 userPrincipal, uint256 initialLiquidityIndex) = vault.users(myAddress);
+        emit log_named_uint("user allocation", userAllocation);
+        emit log_named_uint("user principal ", userPrincipal);
+        emit log_named_uint("user initial liquidity index", initialLiquidityIndex);
+
+
+        (uint256 totalValue, uint256 userWithdrawAmount, uint256 donatedYield) = vault.getUserBalance(myAddress);
+        emit log_named_uint("total value", totalValue);
+        emit log_named_uint("user withdraw amount", userWithdrawAmount);
+        emit log_named_uint("donated yield", donatedYield);
+
+        emit log_named_uint("", 0);
+
         // Jumps forward blocks
-        vm.warp(block.timestamp + 10000);
+        vm.warp(block.timestamp + 100000);
+
+        (userAllocation, userPrincipal, initialLiquidityIndex) = vault.users(myAddress);
+        emit log_named_uint("user allocation", userAllocation);
+        emit log_named_uint("user principal ", userPrincipal);
+        emit log_named_uint("user initial liquidity index", initialLiquidityIndex);
+
+        
+
+        (totalValue, userWithdrawAmount, donatedYield) = vault.getUserBalance(myAddress);
+        emit log_named_uint("total value", totalValue);
+        emit log_named_uint("user withdraw amount", userWithdrawAmount);
+        emit log_named_uint("donated yield", donatedYield);
      
         // Withdraw 95% DAI to user and 5% DAI to vault
         vault.withdrawAllUnderlyingOnBehalf();
+
+
     }
 }
