@@ -21,11 +21,13 @@ interface AaveLendingPool{
 struct UserInfo{
     uint256 userAllocation;
     uint256 userPrincipal;
-    uint256 initialLiquidityIndex;
+    uint128 initialLiquidityIndex;
 }
 
 
 contract FundPG {
+    using WadRayMath for uint256;
+
     uint256 MAX_INT = 2**256 - 1;
     address public depositToken;
     address public strategyAddress;
@@ -41,15 +43,25 @@ contract FundPG {
     event donation(address indexed user, uint256 amount);
 
     function getUserBalance(address userAddress) public view returns(uint256 totalValue, uint256 userWithdrawAmount, uint256 donatedYield) {
+        // Require that user has deposited
+        require(users[userAddress].userPrincipal > 0, "User has not deposited");
+
         AaveLendingPool aaveContract = AaveLendingPool(strategyAddress);   
 
          // Retrieve principal + interest of user's deposit
         (, uint128 liquidityIndex, , , , , , , , , , ) = aaveContract.getReserveData(depositToken);
-        totalValue = WadRayMath.wadMul(WadRayMath.wadDiv(users[userAddress].userPrincipal,users[userAddress].initialLiquidityIndex), liquidityIndex);
+        uint256 initialScaledBalance = WadRayMath.wadDiv(users[userAddress].userPrincipal,users[userAddress].initialLiquidityIndex);
+        totalValue = WadRayMath.wadMul(initialScaledBalance, liquidityIndex);
+        userWithdrawAmount = totalValue;
+        donatedYield = 0;
 
-        // Withdraw 100- userAllocation[userAddress] % of yield to msg.sender
-        donatedYield = (totalValue - users[userAddress].userPrincipal) * users[userAddress].userAllocation / 100;
-        userWithdrawAmount = totalValue - donatedYield;
+        uint256 interest = 0;
+        if (liquidityIndex > users[userAddress].initialLiquidityIndex) {
+            interest = totalValue - users[userAddress].userPrincipal;
+            donatedYield = interest * users[userAddress].userAllocation / 100;
+            userWithdrawAmount = totalValue - donatedYield;
+        }
+
     }
 
     function depositUnderlyingOnBehalf(uint256 depositAmount, uint256 allocationPercentage) public {
