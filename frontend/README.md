@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Welcome to the NextJS wagmi starter template 👋
+Looking to get up and running with a Typescript / NextJS dApp as quickly as possible? You're in the right place! This repo serves as a minimal template for integrating the wagmi React hooks for Ethereum library with Typescript & NextJS. Due to its ease of customizability and extensibility, this template has been styled with the Tailwind CSS framework. Let's get to it!
+### Check out the live demo 👉 [NextJS wagmi](https://nextjs-wagmi.vercel.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Get up and running in 3 simple steps:
 
-## Available Scripts
+### 1. Create an app using this repo as the template
+```bash
+npx create-next-app@latest -e https://github.com/Seth-McKilla/nextjs-wagmi
+```
+>Note: The above command automatically downloads and installs the dependencies so no "npm install" or "yarn add" required!
 
-In the project directory, you can run:
+### 2. Create a .env.local file within the root directory with the following environment variables
+```bash
+NEXT_PUBLIC_INFURA_ID=<insert infura id>
+```
+>Note: Grab an Infura ID from the [Infura website](https://infura.io/)
 
-### `npm start`
+### 3. Start the local development environment
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+That's it, you're all set!
 
-### `npm test`
+## Resources
+To learn more about the packages used in this project, take a look at the following resources:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [React Typescript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/docs/basic/setup/) - helpful tips for using Typescript with React.
+- [wagmi Documentation](https://wagmi-xyz.vercel.app/) - learn about the wagmi React hooks for Ethereum.
+- [Tailwind CSS Documentation](https://tailwindcss.com/) - learn about the Tailwind CSS styling framework.
 
-### `npm run build`
+## Deploy on Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FSeth-McKilla%2Fnextjs-wagmi&env=NEXT_PUBLIC_INFURA_ID)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
