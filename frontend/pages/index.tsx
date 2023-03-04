@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { NextPage } from "next";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { Button, Layout, Loader, WalletOptionsModal } from "../components";
 import shirt from '../public/images/creatureShirt.png'
 import Image from "next/image";
@@ -13,12 +13,14 @@ const Home: NextPage = () => {
     watch: true,
   });
 
-  // const abi = […] as const
-  // const { config } = usePrepareContractWrite({
-  //   address: '0xecb504d39723b0be0e3a9aa33d646642d1051ee1',
-  //   abi: abi,
-  //   functionName: 'feed',
-  // })
+  const abi = {"ok":true,"abi":[{"inputs":[{"internalType":"address","name":"_depositToken","type":"address"},{"internalType":"address","name":"_strategyAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"donation","type":"event"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"depositToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"depositAmount","type":"uint256"},{"internalType":"uint256","name":"allocationPercentage","type":"uint256"}],"name":"depositUnderlyingOnBehalf","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserBalance","outputs":[{"internalType":"uint256","name":"totalValue","type":"uint256"},{"internalType":"uint256","name":"userWithdrawAmount","type":"uint256"},{"internalType":"uint256","name":"donatedYield","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"strategyAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"dstAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferYield","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"userAllocation","type":"uint256"},{"internalType":"uint256","name":"userPrincipal","type":"uint256"},{"internalType":"uint128","name":"initialLiquidityIndex","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawAllUnderlyingOnBehalf","outputs":[],"stateMutability":"nonpayable","type":"function"}]}
+  const { config } = usePrepareContractWrite({
+    address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
+    abi: abi,
+    functionName: 'fundPgVault',
+  })
+
+  const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
   const loading = (accountLoading || balanceLoading) && !balanceData;
 
@@ -32,6 +34,10 @@ const Home: NextPage = () => {
             <h6 className="ml-2 text-2xl">{`Ξ ${Number(
               balanceData?.formatted
             ).toFixed(4)} ${balanceData?.symbol}`}</h6>
+            <Button onClick={() => write()}>
+              Connect 
+              { /* this is where deposit would happen */ }
+            </Button>
           </div>
         </>
       );
@@ -66,7 +72,7 @@ const Home: NextPage = () => {
         <div className="grid h-screen place-items-center">
           <div className="grid place-items-center">
             {/* renderContent() */}
-            <Image src={shirt} alt="creature shirt" width={600} height={600} />
+            {/* <Image src={shirt} alt="creature shirt" width={600} height={600} /> */}
             <a href="https://store.gitcoin.co/products/creature-shipping">
               <button className="rounded-md px-3 py-2 bg-[#478CE1] text-white text-lg font-medium">Purchase Creatures x Gitcoin</button>
             </a>
