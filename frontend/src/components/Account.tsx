@@ -13,12 +13,12 @@ export function Account() {
   const abi = [{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"symbol","type":"string"},{"internalType":"uint8","name":"decimals","type":"uint8"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}]
   const fundPgABI = [{"inputs":[{"internalType":"address","name":"_depositToken","type":"address"},{"internalType":"address","name":"_strategyAddress","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"user","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"donation","type":"event"},{"inputs":[],"name":"admin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"depositToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"depositAmount","type":"uint256"},{"internalType":"uint256","name":"allocationPercentage","type":"uint256"}],"name":"depositUnderlyingOnBehalf","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"}],"name":"getUserBalance","outputs":[{"internalType":"uint256","name":"totalValue","type":"uint256"},{"internalType":"uint256","name":"userWithdrawAmount","type":"uint256"},{"internalType":"uint256","name":"donatedYield","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"strategyAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"dstAddress","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferYield","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"users","outputs":[{"internalType":"uint256","name":"userAllocation","type":"uint256"},{"internalType":"uint256","name":"userPrincipal","type":"uint256"},{"internalType":"uint128","name":"initialLiquidityIndex","type":"uint128"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdrawAllUnderlyingOnBehalf","outputs":[],"stateMutability":"nonpayable","type":"function"}]
   
-  const { data: aaveData } = useContractRead({
-    address: '0x927F584d4321C1dCcBf5e2902368124b02419a1E',
-    abi: aaveabi,
-    functionName: 'getReserveData',
-    args: ["0x75Ab5AB1Eef154C0352Fc31D2428Cef80C7F8B33"]
-  })
+  // const { data: aaveData } = useContractRead({
+  //   address: '0x927F584d4321C1dCcBf5e2902368124b02419a1E',
+  //   abi: aaveabi,
+  //   functionName: 'getReserveData',
+  //   args: ["0x75Ab5AB1Eef154C0352Fc31D2428Cef80C7F8B33"]
+  // })
 
 
 
@@ -29,14 +29,14 @@ export function Account() {
     args: [address]
   })
 
-  const aaveData2: any = aaveData;
+  // const aaveData2: any = aaveData;
 
-  const newdata: any = balanceData;
+  // const newdata: any = balanceData;
 
-  const totalValue = Number(newdata[1]) / Number(newdata[2]) * Number(aaveData2[7]);
-  const interest = totalValue - Number(newdata[1]);
-  const donatedYield = interest * Number(newdata[0]) / 100;
-  const userWithdrawAmount = totalValue - donatedYield;
+  // const totalValue = Number(newdata[1]) / Number(newdata[2]) * Number(aaveData2[7]);
+  // const interest = totalValue - Number(newdata[1]);
+  // const donatedYield = interest * Number(newdata[0]) / 100;
+  // const userWithdrawAmount = totalValue - donatedYield;
 
   // console.log(Number(aaveData[7]))
   
@@ -100,9 +100,9 @@ export function Account() {
           <div className="text-red-500">An error occurred preparing the transaction: {withdrawError.message}</div>
         )} */}
         <p className="text-gray-600 text-xs mt-4">Note: make sure to change to Goerli network to test</p>
-        {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> Total Value: {JSON.stringify(totalValue)} </p> }
+        {/* {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> Total Value: {JSON.stringify(totalValue)} </p> }
         {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> Donated Yield: {JSON.stringify(donatedYield)} </p> }
-        {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> User Withdraw Amount: {JSON.stringify(userWithdrawAmount)} </p> }
+        {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> User Withdraw Amount: {JSON.stringify(userWithdrawAmount)} </p> } */}
         
       <br />
   </div>
