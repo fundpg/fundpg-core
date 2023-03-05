@@ -55,25 +55,25 @@ export function Account() {
           <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" value={approvalVal} onChange={(e) => setApprovalVal(e.target.value)} placeholder="Enter approval amount" />
         </div>
         <button disabled={!writeDaiApprove} onClick={() => writeDaiApprove?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Approve DAI
+          Approve
         </button>
         {error && (
           <div className="text-red-500">An error occurred preparing the transaction: {error.message}</div>
         )}
         <div className="mt-4">
-          <label className="block text-gray-700 font-bold mb-2">Deposit Amount:</label>
-          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" type="text" value={depositVal} onChange={(e) => setDepositVal(e.target.value)} placeholder="Enter deposit amount" />
-          <label className="block text-gray-700 font-bold mb-2">Allocation Amount:</label>
-          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" value={allocationVal} onChange={(e) => setAllocationVal(e.target.value)} placeholder="Enter allocation amount" />
+          <label className="block text-gray-700 font-bold mb-2">Deposit Amount: {depositVal}</label>
+          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" type="range" value={depositVal} onChange={(e) => setDepositVal(e.target.value)} placeholder="Enter deposit amount" />
+          <label className="block text-gray-700 font-bold mb-2">Allocation Amount: {`${allocationVal}%`}</label>
+          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="range" value={allocationVal} onChange={(e) => setAllocationVal(e.target.value)} placeholder="Enter allocation amount" />
         </div>
         <button disabled={!writeDeposit} onClick={() => writeDeposit?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-          depositUnderlyIntOnBehelaf (FundPG)
+          Deposit
         </button>
         {depositError && (
           <div className="text-red-500">An error occurred preparing the transaction: {depositError.message}</div>
         )}
         <button disabled={!writeWithdraw} onClick={() => writeWithdraw?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-          withdrawAllUnderlyingOnBehalf (FundPG)
+          Withdraw
         </button>
         {withdrawError && (
           <div className="text-red-500">An error occurred preparing the transaction: {withdrawError.message}</div>
