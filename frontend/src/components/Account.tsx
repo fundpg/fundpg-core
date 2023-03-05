@@ -20,16 +20,22 @@ export function Account() {
     args: ["0x75Ab5AB1Eef154C0352Fc31D2428Cef80C7F8B33"]
   })
 
-  const { data: balanceData, isError: isBalanceError, isLoading: isBalanceLoading } = useContractRead({
+
+
+  const { data: balanceData , isError: isBalanceError, isLoading: isBalanceLoading } = useContractRead({
     address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
     abi: fundPgABI,
     functionName: 'users',
     args: [address]
   })
 
-  const totalValue = Number(balanceData[1]) / Number(balanceData[2]) * Number(aaveData[7]);
-  const interest = totalValue - Number(balanceData[1]);
-  const donatedYield = interest * Number(balanceData[0]) / 100;
+  const aaveData2: any = aaveData;
+
+  const newdata: any = balanceData;
+
+  const totalValue = Number(newdata[1]) / Number(newdata[2]) * Number(aaveData2[7]);
+  const interest = totalValue - Number(newdata[1]);
+  const donatedYield = interest * Number(newdata[0]) / 100;
   const userWithdrawAmount = totalValue - donatedYield;
 
   // console.log(Number(aaveData[7]))
