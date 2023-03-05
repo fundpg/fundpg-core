@@ -79,11 +79,8 @@ export function Account() {
           <div className="text-red-500">An error occurred preparing the transaction: {withdrawError.message}</div>
         )}
         <p className="text-gray-600 text-xs mt-4">Note: make sure to change to Goerli network to test</p>
-        {!isBalanceLoading && (
-          <p className="text-gray-800 mt-4">
-          Balance: {typeof balanceData !== 'undefined' ? balanceData : '0'}
-          </p>
-        )}
+        {/* {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> Balance: {balanceData} </p> } */}
+        
       <br />
   </div>
 </div>
