@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import NextHead from 'next/head'
 import * as React from 'react'
 import { WagmiConfig } from 'wagmi'
+import '../global.css'
 
 import { chains, client } from '../wagmi'
 
@@ -14,7 +15,7 @@ function App({ Component, pageProps }: AppProps) {
     <WagmiConfig client={client}>
       <RainbowKitProvider chains={chains}>
         <NextHead>
-          <title>My wagmi + RainbowKit App</title>
+          <title>FundPG</title>
         </NextHead>
 
         {mounted && <Component {...pageProps} />}

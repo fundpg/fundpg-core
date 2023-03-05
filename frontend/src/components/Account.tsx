@@ -43,39 +43,49 @@ export function Account() {
   const { write: writeWithdraw } = useContractWrite(withdrawConfig)
 
   return (
-    <p>
-      {ensName ?? address}
-      {ensName ? ` (${address})` : null}
-      <br/>
-      <small>Note: make sure to change to Goerli network to test</small>
-      <br/>
-      {!isBalanceLoading && `Balance: ${balanceData}`}
-      <br/> <br/>
-      <input type="text" value={approvalVal} onChange={(e) => setApprovalVal(e.target.value)} placeholder="Enter approval amount" /> 
-      <button disabled={!writeDaiApprove} onClick={() => writeDaiApprove?.()}>
-        Approve DAI
-      </button>
-      {error && (
-        <div>An error occurred preparing the transaction: {error.message}</div>
-      )}
-      <br/>
-      <br/>
-      <input type="text" value={depositVal} onChange={(e) => setDepositVal(e.target.value)} placeholder="Enter deposit amount" /> 
-      <input type="text" value={allocationVal} onChange={(e) => setAllocationVal(e.target.value)} placeholder="Enter allocation amount" /> 
-      <button disabled={!writeDeposit} onClick={() => writeDeposit?.()}>
-        depositUnderlyIntOnBehelaf (FundPG)
-      </button>
-      {depositError && (
-        <div>An error occurred preparing the transaction: {depositError.message}</div>
-      )}
-      <br/>
-      <br/>
-      <button disabled={!writeWithdraw} onClick={() => writeWithdraw?.()}>
-        withdrawAllUnderlyingOnBehalf (FundPG)
-      </button>
-      {withdrawError && (
-        <div>An error occurred preparing the transaction: {withdrawError.message}</div>
-      )}
-    </p>
-  )
+    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="px-4 py-2 bg-gray-900 text-white font-bold">FundPG</div>
+      <div className="p-4">
+        <p className="text-gray-800">
+          {ensName ?? address}
+          {ensName ? ` (${address})` : null}
+        </p>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-bold mb-2">Approval Amount:</label>
+          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" value={approvalVal} onChange={(e) => setApprovalVal(e.target.value)} placeholder="Enter approval amount" />
+        </div>
+        <button disabled={!writeDaiApprove} onClick={() => writeDaiApprove?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Approve DAI
+        </button>
+        {error && (
+          <div className="text-red-500">An error occurred preparing the transaction: {error.message}</div>
+        )}
+        <div className="mt-4">
+          <label className="block text-gray-700 font-bold mb-2">Deposit Amount:</label>
+          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" type="text" value={depositVal} onChange={(e) => setDepositVal(e.target.value)} placeholder="Enter deposit amount" />
+          <label className="block text-gray-700 font-bold mb-2">Allocation Amount:</label>
+          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" value={allocationVal} onChange={(e) => setAllocationVal(e.target.value)} placeholder="Enter allocation amount" />
+        </div>
+        <button disabled={!writeDeposit} onClick={() => writeDeposit?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+          depositUnderlyIntOnBehelaf (FundPG)
+        </button>
+        {depositError && (
+          <div className="text-red-500">An error occurred preparing the transaction: {depositError.message}</div>
+        )}
+        <button disabled={!writeWithdraw} onClick={() => writeWithdraw?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+          withdrawAllUnderlyingOnBehalf (FundPG)
+        </button>
+        {withdrawError && (
+          <div className="text-red-500">An error occurred preparing the transaction: {withdrawError.message}</div>
+        )}
+        <p className="text-gray-600 text-xs mt-4">Note: make sure to change to Goerli network to test</p>
+        {!isBalanceLoading && (
+          <p className="text-gray-800 mt-4">
+          Balance: {typeof balanceData !== 'undefined' ? balanceData : '0'}
+          </p>
+        )}
+      <br />
+  </div>
+</div>
+)
 }
