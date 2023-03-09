@@ -12,6 +12,7 @@
     "@rainbow-me/rainbowkit": "^0.8.1",
     "ethers": "^5.7.0",
     "next": "^13.0.0",
+    "nextjs-google-analytics": "^2.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "wagmi": "~0.11.0"

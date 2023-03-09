@@ -1,8 +1,9 @@
+import Image from 'next/image'
 import { useState } from 'react'
 import { useAccount, useEnsName, usePrepareContractWrite, useContractWrite, useContractRead } from 'wagmi'
 
 export function Account() {
-  const { address } = useAccount()
+  const { address, ensImage } = useAccount()
   const { data: ensName } = useEnsName({ address })
 
   const [approvalVal, setApprovalVal] = useState('0')
@@ -62,50 +63,138 @@ export function Account() {
     functionName: 'withdrawAllUnderlyingOnBehalf'
   })
   const { write: writeWithdraw } = useContractWrite(withdrawConfig)
+  const [focused, setFocused] = useState('Approve')
+
+  function renderActionDiv(){
+
+    switch(focused){
+      case 'Approve':
+        return(
+        <center>
+          <div className="mt-5 p-2 w-64 flex flex-col justify-center items-center">
+            <input
+              className="rounded-md px-4 py-2 w-full text-center focus:outline-none text-lg font-medium" 
+              type="number" 
+              placeholder="0"
+              value={approvalVal} 
+              onChange={(e) => setApprovalVal(e.target.value)} 
+            />
+            <button 
+              className="mt-5 px-4 py-2 rounded-md bg-white font-medium"
+              disabled={!writeDaiApprove} 
+              onClick={() => writeDaiApprove?.()}
+            >
+              Approve
+            </button>
+            {/*error && (
+              <div className="text-red-500">An error occurred preparing the transaction: {error.message}</div>
+            )*/}
+          </div>
+        </center>
+        )
+      case 'Deposit': 
+        return(
+          <div className="mt-3">
+            <label className="block mb-2 text-sm font-medium text-gray-900">{`Amount: ${depositVal}`}</label>
+            <input 
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+              type="range" 
+              value={depositVal} 
+              onChange={(e) => setDepositVal(e.target.value)} />
+
+            <label className="block mb-2 text-sm font-medium text-gray-900">{`Allocation: ${allocationVal}%`}</label>
+            <input 
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+              type="range" 
+              value={allocationVal} 
+              onChange={(e) => setAllocationVal(e.target.value)} />
+
+            <button 
+              className="mt-2 rounded-md bg-white text-black px-4 py-2"
+              disabled={!writeDeposit} 
+              onClick={() => writeDeposit?.()}>
+                Deposit
+            </button>
+            {/*depositError && (
+              <div className="text-red-500">An error occurred preparing the transaction: {depositError.message}</div>
+            )*/}
+          </div>
+        )
+      case 'Withdraw':
+        return(
+          <div className="mt-5">
+            <center>
+              <button 
+                className="mt-2 rounded-md bg-white text-black px-4 py-2"
+                disabled={!writeWithdraw} 
+                onClick={() => writeWithdraw?.()}>
+                  Withdraw All
+              </button>
+            </center>
+            {/*withdrawError && (
+              <div className="text-red-500">An error occurred preparing the transaction: {withdrawError.message}</div>
+            )*/}
+          </div>
+        )
+    }
+  }
+
+  const exampleTxnArray = [
+    { amount: 'Deposited 0.64 ETH', date: '12 days ago' },
+    { amount: 'Deposited 0.32 ETH', date: '26 days ago' },
+    { amount: 'Deposited 0.53 ETH', date: '8 days ago' },
+    { amount: 'Deposited 0.27 ETH', date: '17 days ago' },
+    { amount: 'Deposited 0.76 ETH', date: '22 days ago' },
+    { amount: 'Deposited 0.94 ETH', date: '3 days ago' },
+    { amount: 'Deposited 0.49 ETH', date: '19 days ago' },
+    { amount: 'Deposited 0.89 ETH', date: '6 days ago' },
+    { amount: 'Deposited 0.12 ETH', date: '11 days ago' },
+    { amount: 'Deposited 0.42 ETH', date: '28 days ago' },
+  ];
 
   return (
-    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="px-4 py-2 bg-gray-900 text-white font-bold">FundPG</div>
-      <div className="p-4">
-        <p className="text-gray-800">
-          {ensName ?? address}
-          {ensName ? ` (${address})` : null}
-        </p>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2">Approval Amount:</label>
-          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" value={approvalVal} onChange={(e) => setApprovalVal(e.target.value)} placeholder="Enter approval amount" />
+    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">    
+      <div className="flex flex-col items-center">
+        <div className="flex w-full">
+          <div className="w-1/3 bg-[#D9D9D9] rounded-lg mr-2 p-5 h-48">
+            <p className="text-lg font-medium">{ensName}</p>
+          </div>
+          <div className="w-2/3 bg-[#D9D9D9] rounded-lg p-3 h-48">
+            <div className="flex justify-between rounded-lg bg-[#989898] pl-1 pr-1 pt-.5 pb-.5">
+              <button 
+                className={`px-2 py-1 rounded-md ${focused === 'Approve' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
+                onClick={() => focused !== 'Approve' && setFocused('Approve')}>
+                Approve
+              </button>
+              <button 
+                className={`px-2 py-1 rounded-md ${focused === 'Deposit' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
+                onClick={() => focused !== 'Deposit' && setFocused('Deposit')}>
+                Deposit
+              </button>
+              <button 
+                className={`px-2 py-1 rounded-md ${focused === 'Withdraw' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
+                onClick={() => focused !== 'Withdraw' && setFocused('Withdraw')}>
+                Withdraw
+              </button>
+            </div>
+            {renderActionDiv()}
+          </div>
         </div>
-        <button disabled={!writeDaiApprove} onClick={() => writeDaiApprove?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Approve
-        </button>
-        {error && (
-          <div className="text-red-500">An error occurred preparing the transaction: {error.message}</div>
-        )}
-        <div className="mt-4">
-          <label className="block text-gray-700 font-bold mb-2">Deposit Amount: {depositVal}</label>
-          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" type="range" value={depositVal} onChange={(e) => setDepositVal(e.target.value)} placeholder="Enter deposit amount" />
-          <label className="block text-gray-700 font-bold mb-2">Allocation Amount: {`${allocationVal}%`}</label>
-          <input className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="range" value={allocationVal} onChange={(e) => setAllocationVal(e.target.value)} placeholder="Enter allocation amount" />
+        <div className="w-full min-h-[50vh] bg-[#D9D9D9] rounded-lg mt-2 p-3 h-48 overflow-y-scroll">
+          <h1 className="ml-1 p-1 font-medium text-xl">Activity</h1>
+          <div className="rounded-md p-2 bg-white text-black flex flex-col">
+            {exampleTxnArray.map((item, index) => {
+              return(
+                <div key={`${item.amount} ${item.date}`} className="mb-2 last-of-type:mb-0">
+                  <p className="float-left inline-block">{item.amount.split(' ')[0]} <span className="text-red-500">{`${item.amount.split(' ')[1]} ${item.amount.split(' ')[2]}`}</span></p>
+                  <p className="float-right inline-block">{item.date}</p>
+                  {index !== exampleTxnArray.length - 1 && <hr className="mt-8 mb-0 border-gray-300 w-full" />}
+                </div>
+              )
+            })}
+          </div>
         </div>
-        <button onClick={() => writeDeposit?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-          Deposit
-        </button>
-        {/* {depositError && (
-          <div className="text-red-500">An error occurred preparing the transaction: {depositError.message}</div>
-        )} */}
-        <button onClick={() => writeWithdraw?.()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-          Withdraw
-        </button>
-        {/* {withdrawError && (
-          <div className="text-red-500">An error occurred preparing the transaction: {withdrawError.message}</div>
-        )} */}
-        <p className="text-gray-600 text-xs mt-4">Note: make sure to change to Goerli network to test</p>
-        {/* {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> Total Value: {JSON.stringify(totalValue)} </p> }
-        {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> Donated Yield: {JSON.stringify(donatedYield)} </p> }
-        {!isBalanceLoading &&  <p className="text-gray-800 mt-4"> User Withdraw Amount: {JSON.stringify(userWithdrawAmount)} </p> } */}
-        
-      <br />
-  </div>
-</div>
+      </div>
+    </div>
 )
 }
