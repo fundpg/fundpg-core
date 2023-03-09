@@ -1,12 +1,12 @@
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount, useEnsName, usePrepareContractWrite, useContractWrite, useContractRead } from 'wagmi'
 
 export function Account() {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address })
 
-  const [approvalVal, setApprovalVal] = useState('0 ETH')
+  const [approvalVal, setApprovalVal] = useState('0')
   const [depositVal, setDepositVal] = useState('0')
   const [allocationVal, setAllocationVal] = useState('0')
 
@@ -45,15 +45,15 @@ export function Account() {
     address: '0x75ab5ab1eef154c0352fc31d2428cef80c7f8b33',
     abi: abi,
     functionName: 'approve',
-    args: [address, approvalVal]
+    args: [address, approvalVal === '' ? 0 : approvalVal]
   })
-  const { write: writeDaiApprove } = useContractWrite(config)
+  const { write: writeDaiApprove, isSuccess: isApproveSuccess, reset: approveReset } = useContractWrite(config)
 
   const { config: depositConfig, error: depositError } = usePrepareContractWrite({
     address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
     abi: fundPgABI,
     functionName: 'depositUnderlyingOnBehalf',
-    args: [parseInt(depositVal), parseInt(allocationVal)]
+    args: [depositVal === '' ? 0 : depositVal, allocationVal === '' ? 0 : allocationVal]
   })
   const { write: writeDeposit } = useContractWrite(depositConfig)
 
@@ -65,6 +65,12 @@ export function Account() {
   const { write: writeWithdraw } = useContractWrite(withdrawConfig)
   const [focused, setFocused] = useState('Approve')
 
+  // useEffect(() => {
+  //   if(isApproveSuccess){
+  //     approveReset()
+  //   }
+  // }, [isApproveSuccess])
+
   function renderActionDiv(){
 
     switch(focused){
@@ -75,14 +81,18 @@ export function Account() {
             <input
               className="rounded-md px-6 py-4 w-full text-center focus:outline-none text-lg font-medium" 
               type="number" 
-              placeholder="0 ETH"
+              placeholder="0"
               value={approvalVal} 
               onChange={(e) => setApprovalVal(e.target.value)}
             />
             <button 
               className="mt-4 px-2 py-1 text-sm rounded-md bg-white font-medium"
               disabled={!writeDaiApprove} 
-              onClick={() => writeDaiApprove?.()}
+              onClick={() => {
+                writeDaiApprove?.()
+                approveReset?.()
+               }
+              }
             >
               Approve
             </button>
