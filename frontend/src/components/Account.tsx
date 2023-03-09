@@ -160,9 +160,9 @@ export function Account() {
             <p className="text-lg font-medium">{ensName}</p>
           </div>
           <div className="w-2/3 bg-[#D9D9D9] rounded-lg p-3 h-48">
-            <div className="flex justify-between rounded-lg bg-[#989898] pl-1 pr-1 pt-.5 pb-.5">
+            <div className="flex justify-between rounded-lg bg-[#989898] pt-.5 pb-.5">
               <button 
-                className={`px-2 py-1 rounded-md ${focused === 'Approve' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
+                className={`px-2 py-1 rounded-md l-0 ${focused === 'Approve' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
                 onClick={() => focused !== 'Approve' && setFocused('Approve')}>
                 Approve
               </button>
@@ -172,7 +172,7 @@ export function Account() {
                 Deposit
               </button>
               <button 
-                className={`px-2 py-1 rounded-md ${focused === 'Withdraw' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
+                className={`px-2 py-1 rounded-md r-0 ${focused === 'Withdraw' && 'bg-[#7A7A7A] text-white'} text-gray-700 font-medium`}
                 onClick={() => focused !== 'Withdraw' && setFocused('Withdraw')}>
                 Withdraw
               </button>

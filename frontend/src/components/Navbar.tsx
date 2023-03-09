@@ -20,10 +20,10 @@ export default function Navbar() {
         </div>
         <div className="flex justify-start">
         {(isConnected || router.pathname !== '/') && <div className="mr-5"><ConnectButton  /></div>}
-        <Link href="/about" className="mr-6 text-gray-600 hover:text-gray-800">
+        <Link href="/about" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
           About
         </Link>
-        <Link href="/gitcoin-creatures" className="mr-6 text-gray-600 hover:text-gray-800">
+        <Link href="/gitcoin-creatures" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
           Gitcoin x Creatures
         </Link>
       </div>
