@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAccount, useEnsName, usePrepareContractWrite, useContractWrite, useContractRead } from 'wagmi'
 
 export function Account() {
-  const { address, ensImage } = useAccount()
+  const { address } = useAccount()
   const { data: ensName } = useEnsName({ address })
 
   const [approvalVal, setApprovalVal] = useState('0')
