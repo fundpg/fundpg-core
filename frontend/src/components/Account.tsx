@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useAccount, useEnsName, usePrepareContractWrite, useContractWrite, useContractRead } from 'wagmi'
+import useDebounce from '../useDebounce'
 
 export function Account() {
   const { address } = useAccount()
@@ -40,20 +41,22 @@ export function Account() {
   // const userWithdrawAmount = totalValue - donatedYield;
 
   // console.log(Number(aaveData[7]))
-  
+  const daiAddress = '0x75ab5ab1eef154c0352fc31d2428cef80c7f8b33'
   const { config, error } = usePrepareContractWrite({
-    address: '0x75ab5ab1eef154c0352fc31d2428cef80c7f8b33',
+    address: daiAddress,
     abi: abi,
     functionName: 'approve',
-    args: [address, approvalVal === '' ? 0 : approvalVal]
+    args: [daiAddress, approvalVal === '' ? 0 : approvalVal]
   })
   const { write: writeDaiApprove, isSuccess: isApproveSuccess, reset: approveReset } = useContractWrite(config)
 
+  const deboucedDeposit = useDebounce(depositVal, 500)
+  const deboucedAllocation = useDebounce(allocationVal, 500)
   const { config: depositConfig, error: depositError } = usePrepareContractWrite({
     address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
     abi: fundPgABI,
     functionName: 'depositUnderlyingOnBehalf',
-    args: [depositVal === '' ? 0 : depositVal, allocationVal === '' ? 0 : allocationVal]
+    args: [depositVal === '' ? 0 : deboucedDeposit, allocationVal === '' ? 0 : deboucedAllocation]
   })
   const { write: writeDeposit } = useContractWrite(depositConfig)
 
