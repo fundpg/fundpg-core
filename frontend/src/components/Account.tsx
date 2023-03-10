@@ -42,18 +42,19 @@ export function Account() {
 
   // console.log(Number(aaveData[7]))
   const daiAddress = '0x75ab5ab1eef154c0352fc31d2428cef80c7f8b33'
+  const fundPGVaultAddress = '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4'
   const { config, error } = usePrepareContractWrite({
     address: daiAddress,
     abi: abi,
     functionName: 'approve',
-    args: [daiAddress, approvalVal === '' ? 0 : approvalVal]
+    args: [fundPGVaultAddress, approvalVal === '' ? 0 : approvalVal]
   })
   const { write: writeDaiApprove, isSuccess: isApproveSuccess, reset: approveReset } = useContractWrite(config)
 
   const deboucedDeposit = useDebounce(depositVal, 500)
   const deboucedAllocation = useDebounce(allocationVal, 500)
   const { config: depositConfig, error: depositError } = usePrepareContractWrite({
-    address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
+    address: fundPGVaultAddress,
     abi: fundPgABI,
     functionName: 'depositUnderlyingOnBehalf',
     args: [depositVal === '' ? 0 : deboucedDeposit, allocationVal === '' ? 0 : deboucedAllocation]
@@ -61,7 +62,7 @@ export function Account() {
   const { write: writeDeposit } = useContractWrite(depositConfig)
 
   const { config: withdrawConfig, error: withdrawError } = usePrepareContractWrite({
-    address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
+    address: fundPGVaultAddress,
     abi: fundPgABI,
     functionName: 'withdrawAllUnderlyingOnBehalf'
   })
