@@ -25,7 +25,7 @@ export function Account() {
 
 
   const { data: balanceData , isError: isBalanceError, isLoading: isBalanceLoading } = useContractRead({
-    address: '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4',
+    address: '0x9d90a08e0eccfc041835c0053ba4d4bd7212ba02',
     abi: fundPgABI,
     functionName: 'users',
     args: [address]
@@ -42,7 +42,7 @@ export function Account() {
 
   // console.log(Number(aaveData[7]))
   const daiAddress = '0x75ab5ab1eef154c0352fc31d2428cef80c7f8b33'
-  const fundPGVaultAddress = '0x3a09D405F23373c590e1DD247B616d26B6B8d5C4'
+  const fundPGVaultAddress = '0x9d90a08e0eccfc041835c0053ba4d4bd7212ba02'
   const { config, error } = usePrepareContractWrite({
     address: daiAddress,
     abi: abi,
