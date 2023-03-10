@@ -42,6 +42,11 @@ contract FundPG {
 
     event donation(address indexed user, uint256 amount);
 
+    function getCurrentLiquidityIndex() public view returns (uint128 liquidityIndex) {
+        AaveLendingPool aaveContract = AaveLendingPool(strategyAddress);
+        (, liquidityIndex, , , , , , , , , , ) = aaveContract.getReserveData(depositToken);
+    }
+
     function getUserBalance(address userAddress) public view returns(uint256 totalValue, uint256 userWithdrawAmount, uint256 donatedYield) {
         // Require that user has deposited
         require(users[userAddress].userPrincipal > 0, "User has not deposited");
@@ -50,8 +55,8 @@ contract FundPG {
 
          // Retrieve principal + interest of user's deposit
         (, uint128 liquidityIndex, , , , , , , , , , ) = aaveContract.getReserveData(depositToken);
-        uint256 initialScaledBalance = WadRayMath.wadDiv(users[userAddress].userPrincipal,users[userAddress].initialLiquidityIndex);
-        totalValue = WadRayMath.wadMul(initialScaledBalance, liquidityIndex);
+        uint256 initialScaledBalance = WadRayMath.rayDiv(users[userAddress].userPrincipal,users[userAddress].initialLiquidityIndex);
+        totalValue = WadRayMath.rayMul(initialScaledBalance, liquidityIndex);
         userWithdrawAmount = totalValue;
         donatedYield = 0;
 
@@ -65,12 +70,13 @@ contract FundPG {
     }
 
     function depositUnderlyingOnBehalf(uint256 depositAmount, uint256 allocationPercentage) public {
-        // Check that deposit is positive, vault has allowances to transfer tokens from caller and allocation is between 0 and 100 
+        // Check that deposit is positive, vault has allowances to transfer tokens from caller, allocation is between 0 and 100 and user has not deposited before 
         Erc20 erc20Contract = Erc20(depositToken);
         uint256 allowance = erc20Contract.allowance(msg.sender, address(this));
         require(depositAmount > 0, "You need to deposit at least some tokens");
         require(allowance >= depositAmount, "Insufficient token allowances");
         require(allocationPercentage >= 0 && allocationPercentage <= 100, "Allocation percentage must be between 0 and 100");
+        require(users[msg.sender].userPrincipal == 0, "User has already deposited. Please withdraw first.");
 
         // Transfer depositAmount from msg.sender to vault
         erc20Contract.transferFrom(msg.sender, address(this), depositAmount);
