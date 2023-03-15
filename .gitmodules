@@ -11,3 +11,6 @@
 	url = https://github.com/openzeppelin/openzeppelin-contracts
 [submodule "lib\\openzeppelin-contracts"]
 	branch = v4.8.1
+[submodule "lib/v2-contracts"]
+	path = lib/v2-contracts
+	url = https://github.com/alchemix-finance/v2-contracts
