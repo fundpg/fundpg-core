@@ -5,9 +5,11 @@ import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "v2-contracts/contracts/interfaces/IAlchemistV2.sol";
 
 contract FundPGAlchemix {
+    uint256 constant MAX_INT = 2**256 - 1;
+    address public charityAddress;
     IERC20 public depositToken;
     IAlchemistV2 public strategyAddress;
-    address public charityAddress;
+
     mapping (address => uint256) public userAllocation;
     mapping (address => uint256) public userPrincipal;
     mapping (address => uint256) public userDonation;
@@ -22,7 +24,7 @@ contract FundPGAlchemix {
 
     function deposit(uint256 depositAmount, uint256 allocationPercentage) public {
     // Check that deposit is positive, vault has allowances to transfer tokens from caller, allocation is between 0 and 100 and user has not deposited before 
-    uint256 allowance = strategyAddress.allowance(msg.sender, strategyAddress);
+    uint256 allowance = depositToken.allowance(msg.sender, address(strategyAddress));
     require(depositAmount > 0, "You need to deposit at least some tokens");
     require(allowance >= depositAmount, "Insufficient token allowances");
     require(allocationPercentage >= 0 && allocationPercentage <= 100, "Allocation percentage must be between 0 and 100");
@@ -33,7 +35,7 @@ contract FundPGAlchemix {
 
     // Approve vault to mint debt on behalf of user
     address debtToken = strategyAddress.debtToken();
-    strategyAddress.approveMint(debtToken, MAX_INT, msg.sender);
+    strategyAddress.approveMint(address(this), MAX_INT);
 
     // Update userAllocation, userPrincipal
     userAllocation[msg.sender] = allocationPercentage;
@@ -42,7 +44,7 @@ contract FundPGAlchemix {
 
     function donate() public {
         // Require that user has deposited
-        require(users[msg.sender].userPrincipal > 0, "User has not deposited");
+        require(userPrincipal[msg.sender] > 0, "User has not deposited");
 
         // Get user's total yield and donated amount
         uint256 totalValue = strategyAddress.totalValue(msg.sender);
