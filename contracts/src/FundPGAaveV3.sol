@@ -106,8 +106,8 @@ contract FundPGAaveV3 {
 
     function createAttestation() public {
         IAttestationStation attestationStation = IAttestationStation(0xEE36eaaD94d1Cc1d0eccaDb55C38bFfB6Be06C77);
-        bytes32 key = bytes32(abi.encodePacked("fundpg.donations.amount"));
-        bytes memory value = bytes(abi.encodePacked(users[msg.sender].userDonations));
+        bytes32 key = bytes32(abi.encode("fundpg.donations.amount"));
+        bytes memory value = bytes(abi.encode(users[msg.sender].userDonations));
         attestationStation.attest(msg.sender, key, value);
     }
 
