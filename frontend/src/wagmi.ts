@@ -1,17 +1,17 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { configureChains, createClient } from 'wagmi'
-import { goerli, mainnet } from 'wagmi/chains'
+import { goerli, polygon, polygonMumbai, optimismGoerli } from 'wagmi/chains'
 import { publicProvider } from 'wagmi/providers/public'
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [goerli, ...(process.env.NODE_ENV === 'development' ? [goerli] : [])],
+  [goerli, polygon, polygonMumbai, optimismGoerli],
   [
     publicProvider(),
   ],
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'My wagmi + RainbowKit App',
+  appName: 'FundPG',
   chains,
 })
 
