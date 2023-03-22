@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useAccount, useEnsName, usePrepareContractWrite, useContractWrite, useWaitForTransaction, useContractRead, useNetwork } from 'wagmi';
-import { daiGoerliAbi, daiMumbaiAbi, daiPolygonAbi, daiOptimismGoerliAbi, fundPgGoerliAbi, fundPgMumbaiAbi, fundPgPolygonAbi, fundPgOptimismGoerliAbi } from '../lib/abi';
+import { daiGoerliAbi, daiMumbaiAbi, daiPolygonAbi, daiOptimismAbi, daiOptimismGoerliAbi, fundPgGoerliAbi, fundPgMumbaiAbi, fundPgPolygonAbi, fundPgOptimismAbi,  fundPgOptimismGoerliAbi } from '../lib/abi';
 import useDebounce from '../useDebounce';
 import Actions from './Actions';
 import Transactions from './Transactions';
@@ -36,6 +36,12 @@ export function Account() {
       daiAbi: daiGoerliAbi,
       fundPGVault: '0x9d90a08e0eccfc041835c0053ba4d4bd7212ba02',
       fundPgAbi: fundPgGoerliAbi,
+    },
+    optimism: {
+      dai: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+      daiAbi: daiOptimismAbi,
+      fundPGVault: '0x4e4358541dAFafA48b8487E9bC3Cb782911b1CE4',
+      fundPgAbi: fundPgOptimismAbi
     },
     'optimism-goerli': {
       dai: '0xcad01dadb7e97ae45b89791d986470f3dfc256f7',
