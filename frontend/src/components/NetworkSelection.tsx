@@ -45,6 +45,9 @@ const handleSubNetworkSelection = (subNetwork) => {
     case 'Mumbai':
       chainId = 80001;
       break;
+    case 'Optimism':
+      chainId = 10;
+      break;
     case 'Optimism Goerli':
       chainId = 420;
       break;
@@ -137,6 +140,15 @@ const handleSubNetworkSelection = (subNetwork) => {
                         onClick={() => handleSubNetworkSelection('Mumbai')}
                       >
                         Mumbai
+                      </button>
+                    </div>
+                    <div className="flex items-center mb-4">
+                      <Image src={polygon} width={40} height={40} alt="Polygon logo" />
+                      <button
+                        className="ml-2 text-gray-700 text-sm"
+                        onClick={() => handleSubNetworkSelection('Optimism')}
+                      >
+                        Optimism
                       </button>
                     </div>
                     <div className="flex items-center mb-4">
