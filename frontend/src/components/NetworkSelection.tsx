@@ -3,6 +3,7 @@ import Image from 'next/image';
 import aave from '../aave.png';
 import ethereum from '../ethereum.png';
 import polygon from '../polygon.png';
+import optimism from '../optimism.png';
 import { client, chains } from '../wagmi';
 import { useNetwork, useSwitchNetwork } from 'wagmi'
 
@@ -87,13 +88,13 @@ const handleSubNetworkSelection = (subNetwork) => {
               <div className="bg-white rounded-md p-4">
                 {!selected && (
                   <>
-                    <button className="text-gray-700 text-sm" onClick={() => setShowModal(!showModal)}>
+                    <button className="text-gray-700 text-sm font-medium mb-4" onClick={() => setShowModal(!showModal)}>
                         &lt; Back
                       </button>
                     <div className="flex items-center mb-4">
-                      <Image src={aave} width={40} height={40} alt="Aave logo" />
+                      <Image src={aave} width={25} height={25} alt="Aave logo" />
                       <button
-                        className="ml-2 text-gray-700 text-sm"
+                        className="ml-3 text-gray-700 text-md"
                         onClick={() => handleNetworkSelection('Aave')}
                       >
                         Aave
@@ -113,48 +114,48 @@ const handleSubNetworkSelection = (subNetwork) => {
                         height={15}
                         alt="Aave logo"
                       />
-                      <span className="ml-2 text-gray-700 text-sm">{selected}</span>
+                      <span className="ml-2 text-gray-700 text-sm font-medium">{selected}</span>
                     </div>
                     <div className="flex items-center mb-4">
-                      <Image src={ethereum} width={40} height={40} alt="Ethereum logo" />
+                      <Image src={ethereum} width={30} height={30} alt="Ethereum logo" />
                       <button
-                        className="ml-2 text-gray-700 text-sm"
+                        className="ml-2 text-gray-700 text-md"
                         onClick={() => handleSubNetworkSelection('Goerli')}
                       >
                         Goerli
                       </button>
                     </div>
                     <div className="flex items-center mb-4">
-                      <Image src={polygon} width={40} height={40} alt="Polygon logo" />
+                      <Image src={polygon} width={30} height={30} alt="Polygon logo" />
                       <button
-                        className="ml-2 text-gray-700 text-sm"
+                        className="ml-2 text-gray-700 text-md"
                         onClick={() => handleSubNetworkSelection('Polygon Mainnet')}
                       >
                         Polygon Mainnet
                       </button>
                     </div>
                     <div className="flex items-center mb-4">
-                      <Image src={polygon} width={40} height={40} alt="Polygon logo" />
+                      <Image src={polygon} width={30} height={30} alt="Polygon logo" />
                       <button
-                        className="ml-2 text-gray-700 text-sm"
+                        className="ml-2 text-gray-700 text-md"
                         onClick={() => handleSubNetworkSelection('Mumbai')}
                       >
                         Mumbai
                       </button>
                     </div>
                     <div className="flex items-center mb-4">
-                      <Image src={polygon} width={40} height={40} alt="Polygon logo" />
+                      <Image src={optimism} width={25} height={25} alt="Optimism logo" />
                       <button
-                        className="ml-2 text-gray-700 text-sm"
+                        className="ml-2 text-gray-700 text-md"
                         onClick={() => handleSubNetworkSelection('Optimism')}
                       >
                         Optimism
                       </button>
                     </div>
                     <div className="flex items-center mb-4">
-                      <Image src={polygon} width={40} height={40} alt="Polygon logo" />
+                      <Image src={optimism} width={25} height={25} alt="Optimism logo" />
                       <button
-                        className="ml-2 text-gray-700 text-sm"
+                        className="ml-2 text-gray-700 text-md"
                         onClick={() => handleSubNetworkSelection('Optimism Goerli')}
                       >
                         Optimism Goerli
