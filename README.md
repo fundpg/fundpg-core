@@ -10,4 +10,4 @@ Our team consists of experienced developers and experts in the DeFi space who ar
 # Demo
 Check out the demo at https://fundpg.xyz
 
-You may issue yourself Aave's test DAI tokens at https://staging.aave.com/ 
+You may issue yourself Aave's test DAI tokens at https://staging.aave.com/  
