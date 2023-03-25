@@ -80,8 +80,8 @@ export function Account() {
   const { config: approvalConfig, error: approvalError } = usePrepareContractWrite({
     address: daiAddress,
     abi: approveAbi,
-    functionName: 'approve',
-    args: [fundPGVaultAddress, approvalVal === '' ? 0 : approvalVal]
+    functionName: chain.network === 'optimism' || chain.network === 'optimism-goerli' ? 'createAttestation' : 'approve',
+    args: chain.network === 'optimism' || chain.network === 'optimism-goerli' ? [fundPGVaultAddress] : [fundPGVaultAddress, approvalVal === '' ? 0 : approvalVal]
   })
   const { data: daiApproveData, write: writeDaiApprove, reset: approveReset } = useContractWrite(approvalConfig)
   const { isLoading: isApproveLoading, isSuccess: isApproveSuccess } = useWaitForTransaction({
@@ -139,7 +139,7 @@ export function Account() {
                   }
                 }}
               >
-                Approve
+                {chain.network === 'optimism' || chain.network === 'optimism-goerli' ? 'createAttestation' : 'Approve'}
               </button>
             </div>
           </center>
@@ -231,5 +231,5 @@ export function Account() {
         </div>
       </div>
     </div>
-)
+ );
 }
