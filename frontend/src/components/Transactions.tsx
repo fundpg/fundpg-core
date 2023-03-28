@@ -19,7 +19,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const getAssetTransfers = async (contractAddress, walletAddress, chainId) => {
+  const getAssetTransfers = async (contractAddress: string, walletAddress: string, chainId: string) => {
     const url = `/alchemy/`;
     const data = {
       jsonrpc: '2.0',

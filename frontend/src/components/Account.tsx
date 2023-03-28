@@ -5,7 +5,7 @@ import { daiGoerliAbi, daiMumbaiAbi, daiPolygonAbi, daiOptimismAbi, daiOptimismG
 import useDebounce from '../useDebounce';
 import Actions from './Actions';
 import Transactions from './Transactions';
-import Breadcrumb from './Breadcrumb';
+// import Breadcrumb from './Breadcrumb';
 
 export function Account() {
   const { address } = useAccount()
@@ -52,25 +52,55 @@ export function Account() {
   };
 
   // Dai vault and FundPG vault addresses, depending on chain network
-  const daiAddress = contractAddresses[chain.network]?.dai || contractAddresses.goerli.dai;
-  const fundPGVaultAddress = contractAddresses[chain.network]?.fundPGVault || contractAddresses.goerli.fundPGVault;
+  const daiAddress = chain?.network === 'matic' ? contractAddresses.matic.dai : 
+                     chain?.network === 'maticum' ? contractAddresses.maticum.dai :
+                     chain?.network === 'goerli' ? contractAddresses.goerli.dai :
+                     chain?.network === 'optimism' ? contractAddresses.optimism.dai :
+                     chain?.network === 'optimism-goerli' ? contractAddresses['optimism-goerli'].dai :
+                     contractAddresses.goerli.dai;
+  const fundPGVaultAddress = chain?.network === 'matic' ? contractAddresses.matic.fundPGVault : 
+                              chain?.network === 'maticum' ? contractAddresses.maticum.fundPGVault :
+                              chain?.network === 'goerli' ? contractAddresses.goerli.fundPGVault :
+                              chain?.network === 'optimism' ? contractAddresses.optimism.fundPGVault :
+                              chain?.network === 'optimism-goerli' ? contractAddresses['optimism-goerli'].fundPGVault :
+                              contractAddresses.goerli.fundPGVault;
 
   //balance data abi and args
-  const balanceAbi = contractAddresses[chain.network]?.fundPgAbi || contractAddresses.goerli.fundPgAbi;
+  const balanceAbi = chain?.network === 'matic' ? contractAddresses.matic.fundPgAbi : 
+                      chain?.network === 'maticum' ? contractAddresses.maticum.fundPgAbi :
+                      chain?.network === 'goerli' ? contractAddresses.goerli.fundPgAbi :
+                      chain?.network === 'optimism' ? contractAddresses.optimism.fundPgAbi :
+                      chain?.network === 'optimism-goerli' ? contractAddresses['optimism-goerli'].fundPgAbi :
+                      contractAddresses.goerli.fundPgAbi;
   
   //approve abi and args
-  const approveAbi = contractAddresses[chain.network]?.daiAbi || contractAddresses.goerli.daiAbi;
+  const approveAbi = chain?.network === 'matic' ? contractAddresses.matic.daiAbi : 
+                      chain?.network === 'maticum' ? contractAddresses.maticum.daiAbi :
+                      chain?.network === 'goerli' ? contractAddresses.goerli.daiAbi :
+                      chain?.network === 'optimism' ? contractAddresses.optimism.daiAbi :
+                      chain?.network === 'optimism-goerli' ? contractAddresses['optimism-goerli'].daiAbi :
+                      contractAddresses.goerli.daiAbi;
   const approveArgs = []; // todo - figure out proper approve function for non-goerli chains
 
   //deposit abi and args
-  const depositAbi = contractAddresses[chain.network]?.fundPgAbi || contractAddresses.goerli.fundPgAbi;
+  const depositAbi = chain?.network === 'matic' ? contractAddresses.matic.fundPgAbi : 
+                      chain?.network === 'maticum' ? contractAddresses.maticum.fundPgAbi :
+                      chain?.network === 'goerli' ? contractAddresses.goerli.fundPgAbi :
+                      chain?.network === 'optimism' ? contractAddresses.optimism.fundPgAbi :
+                      chain?.network === 'optimism-goerli' ? contractAddresses['optimism-goerli'].fundPgAbi :
+                      contractAddresses.goerli.fundPgAbi;
 
   //withdraw abi and args
-  const withdrawAbi = contractAddresses[chain.network]?.fundPgAbi || contractAddresses.goerli.fundPgAbi;
+  const withdrawAbi = chain?.network === 'matic' ? contractAddresses.matic.fundPgAbi : 
+                      chain?.network === 'maticum' ? contractAddresses.maticum.fundPgAbi :
+                      chain?.network === 'goerli' ? contractAddresses.goerli.fundPgAbi :
+                      chain?.network === 'optimism' ? contractAddresses.optimism.fundPgAbi :
+                      chain?.network === 'optimism-goerli' ? contractAddresses['optimism-goerli'].fundPgAbi :
+                      contractAddresses.goerli.fundPgAbi;
 
   // Balance data
   const { data: balanceData , isError: isBalanceError, isLoading: isBalanceLoading } = useContractRead({
-    address: fundPGVaultAddress,
+    address: `0x${fundPGVaultAddress.slice(2)}`,
     abi: balanceAbi,
     functionName: 'users',
     args: [address]
@@ -78,10 +108,10 @@ export function Account() {
 
   // Approve
   const { config: approvalConfig, error: approvalError } = usePrepareContractWrite({
-    address: daiAddress,
-    abi: approveAbi,
-    functionName: chain.network === 'optimism' || chain.network === 'optimism-goerli' ? 'createAttestation' : 'approve',
-    args: chain.network === 'optimism' || chain.network === 'optimism-goerli' ? [fundPGVaultAddress] : [fundPGVaultAddress, approvalVal === '' ? 0 : approvalVal]
+    address: `0x${daiAddress.slice(2)}`,
+    abi: balanceAbi, // approveAbi throwing error
+    functionName: chain?.network === 'optimism' || chain?.network === 'optimism-goerli' ? 'createAttestation' : 'approve',
+    args: chain?.network === 'optimism' || chain?.network === 'optimism-goerli' ? [fundPGVaultAddress] : [fundPGVaultAddress, approvalVal === '' ? 0 : approvalVal]
   })
   const { data: daiApproveData, write: writeDaiApprove, reset: approveReset } = useContractWrite(approvalConfig)
   const { isLoading: isApproveLoading, isSuccess: isApproveSuccess } = useWaitForTransaction({
@@ -92,7 +122,7 @@ export function Account() {
   const deboucedDeposit = useDebounce(depositVal, 500)
   const deboucedAllocation = useDebounce(allocationVal, 500)
   const { config: depositConfig, error: depositError } = usePrepareContractWrite({
-    address: fundPGVaultAddress,
+    address: `0x${fundPGVaultAddress.slice(2)}`,
     abi: depositAbi,
     functionName: 'depositUnderlyingOnBehalf',
     args: [depositVal === '' ? 0 : deboucedDeposit, allocationVal === '' ? 0 : deboucedAllocation]
@@ -101,7 +131,7 @@ export function Account() {
 
   // Withdraw
   const { config: withdrawConfig, error: withdrawError } = usePrepareContractWrite({
-    address: fundPGVaultAddress,
+    address: `0x${fundPGVaultAddress.slice(2)}`,
     abi: withdrawAbi,
     functionName: 'withdrawAllUnderlyingOnBehalf'
   })
@@ -124,22 +154,22 @@ export function Account() {
               <button
                 className="mt-4 px-2 py-1 text-sm rounded-md bg-white font-medium"
                 disabled={!writeDaiApprove}
-                onClick={() => {
+                onClick={async () => {
                   try {
                     console.log('writeDaiApprove called');
-                    writeDaiApprove?.().then((response) => {
-                     console.log('writeDaiApprove promise resolved');
-                     console.log(response);
-                     setTransactionHash(response.hash);
-                     approveReset?.();
-                   });
-
+                    const response = await writeDaiApprove?.();
+                    if (response) {
+                      console.log('writeDaiApprove promise resolved');
+                      console.log(response);
+                      // setTransactionHash(response.hash);
+                      approveReset?.();
+                    }
                   } catch (error) {
                     console.error(error);
                   }
                 }}
               >
-                {chain.network === 'optimism' || chain.network === 'optimism-goerli' ? 'createAttestation' : 'Approve'}
+                {chain?.network === 'optimism' || chain?.network === 'optimism-goerli' ? 'createAttestation' : 'Approve'}
               </button>
             </div>
           </center>
@@ -170,11 +200,16 @@ export function Account() {
             <button
               className="mt-4 px-2 py-1 text-sm rounded-md bg-white font-medium mb-2"
               disabled={!writeDeposit}
-              onClick={() =>
-                writeDeposit?.().then((response) => {
-                  setTransactionHash(response.hash);
-                })
-              }
+              onClick={async () => {
+                try {
+                  await writeDeposit?.();
+                  // if (response) {
+                  //   setTransactionHash(response.hash);
+                  // }
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
             >
               Deposit
             </button>
@@ -187,16 +222,26 @@ export function Account() {
               <button
                 className="mt-10 rounded-md bg-white text-black px-4 py-2"
                 disabled={!writeWithdraw}
-                onClick={() =>
-                  writeWithdraw?.().then((response) => {
-                    setTransactionHash(response.hash);
-                  })
-                }
+                onClick={async () => {
+                  try {
+                    await writeWithdraw?.();
+                    // if (response) {
+                    //   setTransactionHash(response.hash);
+                    // }
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
               >
                 Withdraw All
               </button>
             </center>
           </div>
+        );
+      default:
+        return (
+          <>
+          </>
         );
       }
     }
@@ -209,16 +254,16 @@ export function Account() {
           <div className="w-1/3 bg-[#D9D9D9] rounded-lg mr-2 p-5 h-48">
             <p className="text-lg font-medium">{ensName}</p>
           </div>
-          <Breadcrumb
+{/*           <Breadcrumb
             transactionHash={transactionHash}
-            chainId={chain.id}
+            chainId={chain?.id}
             pending={isApproveLoading}
             success={isApproveSuccess}
-          />
+          /> */}
           <Actions
             focused={focused}
             setFocused={setFocused}
-            renderActionDiv={renderActionDiv}
+            renderActionDiv={() => renderActionDiv()}
           />
         </div>
         <div className="w-full min-h-[50vh] bg-[#D9D9D9] rounded-lg mt-2 p-3 h-48 overflow-y-scroll">

@@ -9,7 +9,7 @@ import { useNetwork, useSwitchNetwork } from 'wagmi'
 
 export default function NetworkSelection() {
   const [showModal, setShowModal] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('Aave');
   const [selectedSubNetwork, setSelectedSubNetwork] = useState('Goerli');
 
@@ -19,19 +19,19 @@ export default function NetworkSelection() {
 
   const handleSelection = () => {
     if (showModal) {
-      setSelectedNetwork(null);
-      setSelectedSubNetwork(null);
-      setSelected(null);
+      setSelectedNetwork('');
+      setSelectedSubNetwork('');
+      setSelected('');
     }
     setShowModal(!showModal);
   };
 
-  const handleNetworkSelection = (network) => {
+  const handleNetworkSelection = (network: any) => {
     setSelected(network);
   };
 
 
-const handleSubNetworkSelection = (subNetwork) => {
+const handleSubNetworkSelection = (subNetwork: any) => {
   let chainId;
   switch (subNetwork) {
     // case 'ETH Mainnet':
@@ -56,9 +56,11 @@ const handleSubNetworkSelection = (subNetwork) => {
       console.error('Unsupported network');
       return;
   }
-  switchNetwork(chainId)
+  if (switchNetwork) {
+    switchNetwork(chainId)
+  }
   setSelectedSubNetwork(subNetwork);
-  setSelected(null);
+  setSelected('');
   setShowModal(!showModal);
 };
 
@@ -66,7 +68,7 @@ const handleSubNetworkSelection = (subNetwork) => {
   
 
   const handleBack = () => {
-    setSelected(null);
+    setSelected('');
   };
 
   useEffect(() => {
