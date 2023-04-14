@@ -1,30 +1,16 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
-import Image from 'next/image'
-import { useAccount, usePrepareContractWrite, useContractWrite } from 'wagmi'
-import logo from '../fpglogo-transparent.png'
+import { ConnectWallet } from "@thirdweb-dev/react";
 import { Account } from '../components'
-import Navbar from '../components/Navbar'
-function Page() {
-  const { isConnected } = useAccount()
 
+function Page() {
   return (
     <>
-      <Navbar />
-      {!isConnected && <><center>
-        <Image 
-          src={logo} 
-          width="600" 
-          height="600" 
-          alt="FPG logo"
-          className="mt-10" />
-      </center>
-      <br/>
-      <div className="ml-[45vw]">
-        {!isConnected && <ConnectButton />}
-      </div>
-      </>}
-      <br/>
-      {isConnected && <Account />}
+      <h1>FundPG</h1>
+
+      <ConnectWallet 
+          theme="dark"
+          btnTitle="Connect Wallet"
+        />
+      {/*isConnected && <Account />*/}
     </>
   )
 }

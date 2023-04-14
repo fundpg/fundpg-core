@@ -1,13 +1,12 @@
-import { useAccount } from "wagmi"
 import React from 'react';
 import Image from 'next/image';
 import imageUrl from '../fpglogo-transparent.png'
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectWallet } from "@thirdweb-dev/react";
 
 export default function Navbar() {
-  const { isConnected } = useAccount()
+  // const { isConnected } = useAccount()
   const router = useRouter()
   console.log(router)
   return (
@@ -19,7 +18,10 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex justify-start">
-        {(isConnected || router.pathname !== '/') && <div className="mr-5"><ConnectButton  /></div>}
+        <ConnectWallet 
+          theme="dark"
+          btnTitle="Connect Wallet"
+        />
         <Link href="/about" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
           About
         </Link>
