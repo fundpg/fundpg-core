@@ -26,7 +26,7 @@ export default function About(){
                 <br/>
                 <p>The development of FundPG is entirely funded by donations and public goods funding. Please support by donating ETH or any ERC20 to our ENS below:</p>
                 <br/>
-                <Link href="https://etherscan.io/address/0x94aaf5ceb457057ac4d1588257988d487272984f">
+                <Link href="https://etherscan.io/address/0x12a5dcABbFaF963db743377937b3Ca00308600f2">
                     <button className="rounded-md bg-[#D9D9D9] pt-1.5 pb-1.5 pl-2 pr-2 text-light">fundpg.eth</button>
                 </Link>
             </div>

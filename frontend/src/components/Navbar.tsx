@@ -3,12 +3,13 @@ import Image from 'next/image';
 import imageUrl from '../fpglogo-transparent.png'
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ConnectWallet } from "@thirdweb-dev/react";
+import { ConnectWallet, useWallet } from "@thirdweb-dev/react";
 
 export default function Navbar() {
-  // const { isConnected } = useAccount()
+
   const router = useRouter()
-  console.log(router)
+  const wallet = useWallet()
+
   return (
     <nav className="flex items-center justify-between flex-wrap bg-white p-6 sticky top-0 z-50">
       <div className="flex items-center flex-shrink-0">
@@ -18,15 +19,16 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex justify-start">
+        {(router.pathname !== '/' || (router.pathname === '/' && typeof wallet !== 'undefined')) &&
         <ConnectWallet 
           theme="dark"
           btnTitle="Connect Wallet"
-        />
-        <Link href="/about" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
+        /> }
+        <Link href="/about" className={`ml-5 mr-6 ${typeof wallet !== 'undefined' ? 'mt-5' : 'mt-1.5'} text-gray-600 hover:text-gray-800`}>
           About
         </Link>
-        <Link href="/gitcoin-creatures" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
-          Gitcoin x Creatures
+        <Link href="/merch" className={`mr-6 ${typeof wallet !== 'undefined' ? 'mt-5' : 'mt-1.5'} text-gray-600 hover:text-gray-800`}>
+          Merch
         </Link>
       </div>
       </div>

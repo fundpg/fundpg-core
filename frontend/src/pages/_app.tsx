@@ -2,6 +2,7 @@ import { ThirdwebProvider } from "@thirdweb-dev/react";
 import type { AppProps } from 'next/app'
 import NextHead from 'next/head'
 import * as React from 'react'
+import "../global.css"
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = React.useState(false)
