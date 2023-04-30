@@ -23,8 +23,8 @@ export default function Navbar() {
         <Link href="/about" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
           About
         </Link>
-        <Link href="/gitcoin-creatures" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
-          Gitcoin x Creatures
+        <Link href="/merch" className="mr-6 mt-1.5 text-gray-600 hover:text-gray-800">
+          Merch
         </Link>
       </div>
       </div>
